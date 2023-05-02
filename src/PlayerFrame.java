@@ -1,8 +1,7 @@
 import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,7 +21,12 @@ public class PlayerFrame extends JFrame
     private final int DEFAULT_WIDTH = 700;
     private final int DEFAULT_HEIGHT = 210;
 
-    private PlayController controller;
+    private JFrame video_frame;
+    private int video_frame_width = 1280;
+    private int video_frame_height = 720;
+    private int video_frame_number = 10;
+    private volatile PlayController controller;
+    private Thread play_thread;
 
     /**
      * 默认构造方法
@@ -48,10 +52,12 @@ public class PlayerFrame extends JFrame
     {
         setFrameProperty();
         addComponents();
-        
         this.setVisible(true);
     }
 
+    /**
+     * 设置窗体参数
+     */
     private void setFrameProperty() 
     {
         // 设置窗体的宽高和起始位置
@@ -79,7 +85,7 @@ public class PlayerFrame extends JFrame
         container.setLayout(null);
         container.add(getFrameSizePane());
         container.add(getPlayParametersPane());
-        container.add(getcontrollertrolButtonPane());
+        container.add(getControlButtonPane());
     }
 
     /**
@@ -171,11 +177,10 @@ public class PlayerFrame extends JFrame
     /**
      * 获取带有播放控制按钮的面板
      */
-    private JPanel getcontrollertrolButtonPane() 
+    private JPanel getControlButtonPane() 
     {
         JPanel pane = new JPanel(new GridLayout(5, 2, 5, 0));
         pane.setBounds(470, 13, 210, 150);
-
         JButton[] jbtns = {
             new JButton("Next"),
             new JButton("Open File"),
@@ -194,34 +199,38 @@ public class PlayerFrame extends JFrame
         return pane;
     }
 
-    private void addJButtonListener(JButton jbtns[]) {
+    /**
+     * 为控制播放的按钮添加监听器
+     */
+    private void addJButtonListener(JButton jbtns[]) 
+    {
         jbtns[1].addActionListener((event) -> {
             JFileChooser jfc = new JFileChooser();
-            var state = jfc.showOpenDialog(null);
-            if (state == JFileChooser.APPROVE_OPTION)
+            int flag = jfc.showOpenDialog(null);
+            if (flag == JFileChooser.APPROVE_OPTION)
             {
                 // System.out.println(jfc.getSelectedFile().getAbsolutePath());
                 String filename = jfc.getSelectedFile().getAbsolutePath();
-                JFrame play_frame = new JFrame("YUV Player of Java");
-                play_frame.addWindowListener(new WindowAdapter() {
-                    public void windowClosing(WindowEvent e) {System.exit(0);}
-                });
-                this.controller = new PlayController(filename, 1280, 720, 10);
-                play_frame.add("Center", controller);
-                play_frame.pack();
-                play_frame.setVisible(true);
-                this.controller.play(play_frame);
+                video_frame = new JFrame("YUV Player of Java");
+                video_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                controller = new PlayController(filename, video_frame_width, video_frame_height, video_frame_number);
+                video_frame.add(controller);
+                video_frame.pack();
+                video_frame.setVisible(true);
+                play_thread = new Thread(() -> { controller.play(video_frame); });
+                play_thread.start();
             }
         });
 
         jbtns[3].addActionListener((event) -> {
-            if (jbtns[3].getText() == "Play")
+            if (jbtns[3].getText().equals("Play"))
             {
-                this.controller.play(this);
+                controller.setPlayState(PlayController.PLAY);
                 jbtns[3].setText("Pause");
             }
             else
             {
+                controller.setPlayState(PlayController.PAUSE);
                 jbtns[3].setText("Play");
             }  
         });
@@ -230,6 +239,8 @@ public class PlayerFrame extends JFrame
     }
 
     public static void main(String[] args) {
-        new PlayerFrame();
+        EventQueue.invokeLater(() -> {
+            new PlayerFrame();
+        });
     }
 }
