@@ -127,24 +127,28 @@ public class PlayerFrame extends JFrame
         jp2.add(jp3);
 
         jrb_cif.addActionListener((event) -> {
-            video_frame_width = 352;
-            video_frame_height = 288;
             text_field1.setText("352");
             text_field2.setText("288");
+            video_frame_width = 352;
+            video_frame_height = 288;
             text_field1.setEditable(false);
             text_field2.setEditable(false);
         });
 
         jrb_qcif.addActionListener((event) -> {
-            video_frame_width = 176;
-            video_frame_height = 144;
             text_field1.setText("176");
             text_field2.setText("144");
+            video_frame_width = 176;
+            video_frame_height = 144;
             text_field1.setEditable(false);
             text_field2.setEditable(false);
         });
 
         jrb_other.addActionListener((event) -> {
+            text_field1.setText("1280");
+            text_field2.setText("720");
+            video_frame_width = 1280;
+            video_frame_height = 720;
             text_field1.setEditable(true);
             text_field2.setEditable(true);
         });
@@ -283,7 +287,7 @@ public class PlayerFrame extends JFrame
             {
                 controller.setPlayState(PlayController.PAUSE);
                 jbtns[3].setText("Play");
-            }  
+            }
         });
 
         jbtns[7].addActionListener((event) -> { System.exit(0); });
