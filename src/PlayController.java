@@ -1,29 +1,37 @@
 import java.io.*;                     // 提供了输入和输出流，用于读写文件和其他类型的数据流
-import java.util.TreeSet;             // 提供了一个集合类，用于存储和操作一组按自然顺序排序的对象
 import java.awt.*;                    // 提供了访问平台本地窗口系统的类和接口
 import java.awt.event.*;              // 提供了处理事件的类和接口，包括鼠标和键盘事件
-import java.awt.geom.AffineTransform; // 提供了一个用于表示 2D 图形变换的类
 import java.awt.image.*;              // 
 import javax.imageio.*;               // 提供了读取和写入图像数据的类和接口
 import javax.swing.*;                 // 提供了构建 GUI 应用程序的高级组件和工具类，例如按钮、文本框、表格等
 
 public class PlayController extends Component 
 {
-	public static final boolean PLAY = true;
-	public static final boolean PAUSE = false;
+	public static final int PLAY = 1;
+	public static final int PAUSE = 2;
+	public static final int PREV = 3;
+	public static final int PREV5 = 4;
+	public static final int NEXT = 5;
+	public static final int NEXT5 = 6;
+	public static final int BACKWARD = 7;
+	public static final int FORWARD = 8;
+	public static final int BACKTOZERO = 9;
 
+	FileInputStream fin;
 	DataInputStream data_in;
 	private byte[] yuv_array;
 	private int[] u_array;
 	private int[] v_array;
 	private int[] rgb_array;
-	private BufferedImage img;              // 一个图像缓冲区，可以进行像素级的操作，例如设置像素颜色、裁剪和缩放图像等
+	private BufferedImage img;   // 一个图像缓冲区，可以进行像素级的操作，例如设置像素颜色、裁剪和缩放图像等
+
+	private String filename;
 	private int width;
 	private int height;
 	private int frame_number;
     private int frame_size;
     private int yuv_frame_size;
-	private boolean play_state = PAUSE;
+	private int play_state = PAUSE;
     
     /**
      * 读取YUV文件并初始化类的成员变量
@@ -34,6 +42,7 @@ public class PlayController extends Component
      */
     public PlayController(String filename, int width, int height, int frame_number) 
     {
+		this.filename = filename;
     	this.width = width;
     	this.height = height;
     	this.frame_size = width * height;  // CIF: 320x288, QCIF: 176x144
@@ -46,9 +55,9 @@ public class PlayController extends Component
     	this.v_array = new int[frame_size];
     	this.rgb_array = new int[frame_size];
 
-		try 
+		try
     	{
-    		FileInputStream fin = new FileInputStream(new File(filename));
+    		fin = new FileInputStream(new File(filename));
     		fin.skip(frame_number * yuv_frame_size);
     		data_in = new DataInputStream(fin);
     		data_in.read(yuv_array, 0, yuv_frame_size);
@@ -62,7 +71,7 @@ public class PlayController extends Component
     	yuv2rgb();
     	img.setRGB(0, 0, width, height, rgb_array, 0, width);
     }
-    
+
     /**
      * 将YUV格式的视频转换为RGB格式
      */
@@ -193,7 +202,7 @@ public class PlayController extends Component
 	 * 返回播放器的状态
 	 * @return play_state PLAY为true, PAUSE为false
 	 */
-	public boolean getPlayState() 
+	public int getPlayState() 
 	{
 		return play_state;
 	}
@@ -202,7 +211,7 @@ public class PlayController extends Component
 	 * 设置播放器状态
 	 * @param state PLAY为true, PAUSE为false
 	 */
-	public void setPlayState(boolean state) 
+	public void setPlayState(int state) 
 	{
 		play_state = state;
 	}

@@ -293,7 +293,7 @@ public class PlayerFrame extends JFrame
         jbtns[5].addActionListener((event) -> { 
             video_frame.dispose();
             controller.setPlayState(PlayController.PAUSE);
-            jbtns[3].setText("Pause");
+            jbtns[3].setText("Play");
         });
 
         jbtns[7].addActionListener((event) -> { System.exit(0); });
