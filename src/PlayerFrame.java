@@ -262,6 +262,7 @@ public class PlayerFrame extends JFrame
                 // System.out.println(jfc.getSelectedFile().getAbsolutePath());
                 String filename = jfc.getSelectedFile().getAbsolutePath();
                 video_frame = new JFrame("YUV Player of Java");
+                video_frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./images/icon.png"));
                 video_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 controller = new PlayController(filename, video_frame_width, video_frame_height, video_frame_number);
                 video_frame.add(controller);
