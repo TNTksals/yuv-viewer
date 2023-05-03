@@ -2,6 +2,8 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,8 +24,8 @@ public class PlayerFrame extends JFrame
     private final int DEFAULT_HEIGHT = 210;
 
     private JFrame video_frame;
-    private int video_frame_width = 1280;
-    private int video_frame_height = 720;
+    private int video_frame_width = 176;
+    private int video_frame_height = 144;
     private int video_frame_number = 10;
     private volatile PlayController controller;
     private Thread play_thread;
@@ -114,13 +116,61 @@ public class PlayerFrame extends JFrame
         jp3.setBounds(0, 80, 95, 50);
         JLabel label_width = new JLabel("Width");
         JLabel label_height = new JLabel("Height");
-        JTextField text_field1 = new JTextField("352");
-        JTextField text_field2 = new JTextField("288");
+        JTextField text_field1 = new JTextField("176");
+        JTextField text_field2 = new JTextField("144");
+        text_field1.setEditable(false);
+        text_field2.setEditable(false);
         jp3.add(label_width);
         jp3.add(label_height);
         jp3.add(text_field1);
         jp3.add(text_field2);
         jp2.add(jp3);
+
+        jrb_cif.addActionListener((event) -> {
+            video_frame_width = 352;
+            video_frame_height = 288;
+            text_field1.setText("352");
+            text_field2.setText("288");
+            text_field1.setEditable(false);
+            text_field2.setEditable(false);
+        });
+
+        jrb_qcif.addActionListener((event) -> {
+            video_frame_width = 176;
+            video_frame_height = 144;
+            text_field1.setText("176");
+            text_field2.setText("144");
+            text_field1.setEditable(false);
+            text_field2.setEditable(false);
+        });
+
+        jrb_other.addActionListener((event) -> {
+            text_field1.setEditable(true);
+            text_field2.setEditable(true);
+        });
+
+        text_field1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent event) {
+                String t = text_field1.getText();
+                if (!t.isBlank()) {
+                    video_frame_width = Integer.parseInt(t);
+                    System.out.println(video_frame_width);
+                }
+            }
+        });
+
+        text_field2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent event) {
+                String t = text_field2.getText();
+                if (!t.isBlank()) {
+                    video_frame_height = Integer.parseInt(t);
+                    System.out.println(video_frame_width);
+                }
+            }
+        });
+
 
         pane.add(jp1);
         pane.add(jp2);
