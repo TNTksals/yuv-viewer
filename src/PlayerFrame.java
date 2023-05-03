@@ -290,6 +290,8 @@ public class PlayerFrame extends JFrame
             }
         });
 
+        jbtns[5].addActionListener((event) -> { video_frame.dispose(); });
+
         jbtns[7].addActionListener((event) -> { System.exit(0); });
     }
 
