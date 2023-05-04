@@ -5,17 +5,22 @@ import java.awt.image.*;              //
 import javax.imageio.*;               // 提供了读取和写入图像数据的类和接口
 import javax.swing.*;                 // 提供了构建 GUI 应用程序的高级组件和工具类，例如按钮、文本框、表格等
 
+
 public class PlayController extends Component 
 {
 	public static final int PLAY = 1;
 	public static final int PAUSE = 2;
-	public static final int PREV = 3;
-	public static final int PREV5 = 4;
-	public static final int NEXT = 5;
-	public static final int NEXT5 = 6;
-	public static final int BACKWARD = 7;
-	public static final int FORWARD = 8;
-	public static final int BACKTOZERO = 9;
+	public static final int PREV_PLAY = 3;
+	public static final int PREV_PAUSE = 4;
+	public static final int PREV5_PLAY = 5;
+	public static final int PREV5_PAUSE = 6;
+	public static final int NEXT_PLAY = 7;
+	public static final int NEXT_PAUSE = 8;
+	public static final int NEXT5_PLAY = 9;
+	public static final int NEXT5_PAUSE = 10;
+	public static final int BACKWARD = 11;
+	public static final int FORWARD = 12;
+	public static final int BACKTOZERO = 13;
 
 	FileInputStream fin;
 	DataInputStream data_in;
@@ -31,7 +36,7 @@ public class PlayController extends Component
 	private int frame_number;
     private int frame_size;
     private int yuv_frame_size;
-	private int play_state = PAUSE;
+	private volatile int play_state = PAUSE;
     
     /**
      * 读取YUV文件并初始化类的成员变量
@@ -241,28 +246,76 @@ public class PlayController extends Component
     {
     	g.drawImage(img, 0, 0, null);
     }
+
+	/**
+	 * 播放视频帧
+	 * @param frame 视频帧显示的窗体
+	 */
+	private void playFrame(JFrame frame) 
+	{
+		try {
+			data_in.read(yuv_array, 0, yuv_frame_size);
+			frame.setTitle("YUV Player of Java #" + frame_number + " frames");
+			++frame_number;
+		} 
+		catch (IOException e) {  
+			e.printStackTrace();
+		}
+		yuv2rgb();
+		img.setRGB(0, 0, width, height, rgb_array, 0, width);
+	}
+
+	/**
+	 * 回退<code>setp</code>帧
+	 * @param frame 视频帧显示窗体
+	 * @param step 回退的帧数
+	 * @param prev_state 回退之前的播放状态
+	 */
+	private void backToPrevFrame(JFrame frame, int step, int prev_state) 
+	{
+		frame_number = frame_number - step * 10 - 1;
+		if (frame_number < 0)
+			frame_number = 0;
+		try {
+			fin = new FileInputStream(new File(filename));
+			fin.skip(frame_number * yuv_frame_size);
+			data_in = new DataInputStream(fin);
+			data_in.read(yuv_array, 0, yuv_frame_size);
+			frame.setTitle("Frame:" + frame_number + " " + filename);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		yuv2rgb();
+		img.setRGB(0, 0, width, height, rgb_array, 0, width);
+		this.setPlayState(prev_state);
+	}
     
     public void play(JFrame frame) 
     {
     	while(true)
     	{
-			if (play_state == PLAY) 
+			switch (play_state)
 			{
-				try 
-				{
-					data_in.read(yuv_array, 0, yuv_frame_size);
-					frame.setTitle("YUV Player of Java #" + frame_number + " frames");
-					++frame_number;
-				} 
-				catch (IOException e) 
-				{  
-					// TODO Auto-generated catch block  
-					e.printStackTrace();
-				}
-				yuv2rgb();
-				img.setRGB(0, 0, width, height, rgb_array, 0, width);
+				case PLAY:
+					playFrame(frame);
+					break;
+				case PAUSE:
+					break;
+				case PREV_PLAY:
+					backToPrevFrame(frame, 1, PLAY);
+					break;
+				case PREV_PAUSE:
+					backToPrevFrame(frame, 1, PAUSE);
+					break;
+				case PREV5_PLAY:
+					backToPrevFrame(frame, 5, PLAY);
+					break;
+				case PREV5_PAUSE:
+					backToPrevFrame(frame, 5, PAUSE);
+					break;
 			}
-			repaint(); 
+			repaint();
     	}
     }
 

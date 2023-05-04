@@ -290,10 +290,24 @@ public class PlayerFrame extends JFrame
             }
         });
 
+        jbtns[4].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.PREV_PLAY);
+            else
+                controller.setPlayState(PlayController.PREV_PAUSE);
+        });
+
         jbtns[5].addActionListener((event) -> { 
             video_frame.dispose();
             controller.setPlayState(PlayController.PAUSE);
             jbtns[3].setText("Play");
+        });
+
+        jbtns[6].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.PREV5_PLAY);
+            else
+                controller.setPlayState(PlayController.PREV5_PAUSE);
         });
 
         jbtns[7].addActionListener((event) -> { System.exit(0); });
