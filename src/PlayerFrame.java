@@ -258,6 +258,14 @@ public class PlayerFrame extends JFrame
      */
     private void addJButtonListener(JButton jbtns[]) 
     {
+        jbtns[0].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.NEXT_PLAY);
+            else
+                controller.setPlayState(PlayController.NEXT_PAUSE);
+        });
+
+
         jbtns[1].addActionListener((event) -> {
             JFileChooser jfc = new JFileChooser();
             int flag = jfc.showOpenDialog(null);
@@ -275,6 +283,13 @@ public class PlayerFrame extends JFrame
                 play_thread = new Thread(() -> { controller.play(video_frame); });
                 play_thread.start();
             }
+        });
+
+        jbtns[2].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.NEXT5_PLAY);
+            else
+                controller.setPlayState(PlayController.NEXT5_PAUSE);  
         });
 
         jbtns[3].addActionListener((event) -> {

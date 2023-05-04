@@ -290,6 +290,29 @@ public class PlayController extends Component
 		img.setRGB(0, 0, width, height, rgb_array, 0, width);
 		this.setPlayState(prev_state);
 	}
+
+	/**
+	 * 快进<code>step</code>帧
+	 * @param frame 视频帧显示的窗口
+	 * @param step 快进的帧数
+	 * @param prev_state 快进之前的播放状态
+	 */
+	private void goToNextFrame(JFrame frame, int step, int prev_state) {
+		frame_number = frame_number + step * 10 - 1;
+		try {
+			fin = new FileInputStream(new File(filename));
+			fin.skip(frame_number * yuv_frame_size);
+			data_in = new DataInputStream(fin);
+			data_in.read(yuv_array, 0, yuv_frame_size);
+			frame.setTitle("Frame:" + frame_number + " " + filename);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		yuv2rgb();
+		img.setRGB(0, 0, width, height, rgb_array, 0, width);
+		this.setPlayState(prev_state);	
+	}
     
     public void play(JFrame frame) 
     {
@@ -313,6 +336,18 @@ public class PlayController extends Component
 					break;
 				case PREV5_PAUSE:
 					backToPrevFrame(frame, 5, PAUSE);
+					break;
+				case NEXT_PLAY:
+					goToNextFrame(frame, 1, PLAY);
+					break;
+				case NEXT_PAUSE:
+					goToNextFrame(frame, 1, PAUSE);
+					break;
+				case NEXT5_PLAY:
+					goToNextFrame(frame, 5, PLAY);
+					break;
+				case NEXT5_PAUSE:
+					goToNextFrame(frame, 5, PAUSE);
 					break;
 			}
 			repaint();
