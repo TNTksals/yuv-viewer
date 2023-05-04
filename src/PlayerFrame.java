@@ -258,14 +258,7 @@ public class PlayerFrame extends JFrame
      */
     private void addJButtonListener(JButton jbtns[]) 
     {
-        jbtns[0].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
-                controller.setPlayState(PlayController.NEXT_PLAY);
-            else
-                controller.setPlayState(PlayController.NEXT_PAUSE);
-        });
-
-
+        // Open File
         jbtns[1].addActionListener((event) -> {
             JFileChooser jfc = new JFileChooser();
             int flag = jfc.showOpenDialog(null);
@@ -285,13 +278,7 @@ public class PlayerFrame extends JFrame
             }
         });
 
-        jbtns[2].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
-                controller.setPlayState(PlayController.NEXT5_PLAY);
-            else
-                controller.setPlayState(PlayController.NEXT5_PAUSE);  
-        });
-
+        // Play/Pause
         jbtns[3].addActionListener((event) -> {
             if (jbtns[3].getText().equals("Play"))
             {
@@ -305,6 +292,23 @@ public class PlayerFrame extends JFrame
             }
         });
 
+        // Next
+        jbtns[0].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.NEXT_PLAY);
+            else
+                controller.setPlayState(PlayController.NEXT_PAUSE);
+        });
+
+        // Next5
+        jbtns[2].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.NEXT5_PLAY);
+            else
+                controller.setPlayState(PlayController.NEXT5_PAUSE);  
+        });
+
+        // Prev
         jbtns[4].addActionListener((event) -> {
             if (controller.getPlayState() == PlayController.PLAY)
                 controller.setPlayState(PlayController.PREV_PLAY);
@@ -312,12 +316,7 @@ public class PlayerFrame extends JFrame
                 controller.setPlayState(PlayController.PREV_PAUSE);
         });
 
-        jbtns[5].addActionListener((event) -> { 
-            video_frame.dispose();
-            controller.setPlayState(PlayController.PAUSE);
-            jbtns[3].setText("Play");
-        });
-
+        // Prev5
         jbtns[6].addActionListener((event) -> {
             if (controller.getPlayState() == PlayController.PLAY)
                 controller.setPlayState(PlayController.PREV5_PLAY);
@@ -325,6 +324,14 @@ public class PlayerFrame extends JFrame
                 controller.setPlayState(PlayController.PREV5_PAUSE);
         });
 
+        // Close All
+        jbtns[5].addActionListener((event) -> { 
+            video_frame.dispose();
+            controller.setPlayState(PlayController.PAUSE);
+            jbtns[3].setText("Play");
+        });
+
+        // Quit
         jbtns[7].addActionListener((event) -> { System.exit(0); });
     }
 
