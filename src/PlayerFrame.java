@@ -54,7 +54,6 @@ public class PlayerFrame extends JFrame
     {
         setFrameProperty();
         addComponents();
-        this.setVisible(true);
     }
 
     /**
@@ -335,9 +334,17 @@ public class PlayerFrame extends JFrame
         jbtns[7].addActionListener((event) -> { System.exit(0); });
     }
 
+    /**
+     * 启动播放器(设置可见性)
+     */
+    public void start() 
+    {
+        this.setVisible(true);
+    }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            new PlayerFrame();
+            new PlayerFrame().start();;
         });
     }
 }
