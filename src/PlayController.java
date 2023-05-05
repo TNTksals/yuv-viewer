@@ -66,17 +66,14 @@ public class PlayController extends Component
     	this.v_array = new int[frame_size];
     	this.rgb_array = new int[frame_size];
 
-		try
-    	{
+		try {
     		fin = new FileInputStream(new File(filename));
     		fin.skip(frame_number * yuv_frame_size);
     		data_in = new DataInputStream(fin);
     		data_in.read(yuv_array, 0, yuv_frame_size);
     		++this.frame_number;
     	} 
-    	catch (IOException e) 
-    	{  
-            // TODO Auto-generated catch block  
+    	catch (IOException e) {  
             e.printStackTrace();  
         }
     	yuv2rgb();
@@ -228,23 +225,6 @@ public class PlayController extends Component
 	}
     
     /**
-     * 将当前帧以指定格式保存为图像文件
-     * @param formatname 图像格式
-     * @param filename 保存文件名
-     */
-    public void writeFile(String formatname, String filename) 
-    {
-        try 
-        {
-            ImageIO.write(img, formatname, new File(filename));
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();  
-        }
-    }
-    
-    /**
      * 将当前帧绘制到屏幕上
      */
     @Override
@@ -329,6 +309,7 @@ public class PlayController extends Component
 	/**
 	 * 回到视频开头
 	 * @param frame 视频帧显示的窗口
+	 * @param prev_state 前一刻的播放状态
 	 */
 	private void backToBeginFrame(JFrame frame, int prev_state) 
 	{
@@ -394,6 +375,22 @@ public class PlayController extends Component
     	}
     }
 
+    /**
+     * 将当前帧以指定格式保存为图像文件
+     * @param formatname 图像格式
+     * @param filename 保存文件名
+     */
+    public void writeFile(String formatname, String filename) 
+    {
+        try 
+        {
+            ImageIO.write(img, formatname, new File(filename));
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();  
+        }
+    }
     
     /**
      * 单元测试
