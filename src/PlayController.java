@@ -33,9 +33,11 @@ public class PlayController extends Component
 	private String filename;
 	private int width;
 	private int height;
-	private int frame_number;
     private int frame_size;
     private int yuv_frame_size;
+	private int frame_number_begin;
+	private int frame_number_end;
+	private int frame_number;
 	private volatile int play_state = PAUSE;
     
     /**
@@ -43,16 +45,19 @@ public class PlayController extends Component
      * @param filename 视频文件名
      * @param width 视频帧宽度
      * @param height 视频帧高度
-     * @param frame_number 帧序列
+     * @param frame_number_begin 开始帧序列
+	 * @param frame_number_end 结束帧序列
      */
-    public PlayController(String filename, int width, int height, int frame_number) 
+    public PlayController(String filename, int width, int height, int frame_number_begin, int frame_number_end) 
     {
 		this.filename = filename;
     	this.width = width;
     	this.height = height;
     	this.frame_size = width * height;  // CIF: 320x288, QCIF: 176x144
-    	this.frame_number = frame_number;
     	this.yuv_frame_size = (width * height * 3) >> 1;
+		this.frame_number_begin = frame_number_begin;
+		this.frame_number_end = frame_number_end;
+		this.frame_number = frame_number_begin;
     	//在Heap分配空间
     	this.img = new BufferedImage(width, height, 1);  // 1:TYPE_INT_RGB
     	this.yuv_array = new byte[yuv_frame_size];
@@ -253,6 +258,8 @@ public class PlayController extends Component
 	 */
 	private void playFrame(JFrame frame) 
 	{
+		if (frame_number == frame_number_end + 1)
+			return;
 		try {
 			data_in.read(yuv_array, 0, yuv_frame_size);
 			frame.setTitle("YUV Player of Java #" + frame_number + " frames");
@@ -274,14 +281,15 @@ public class PlayController extends Component
 	private void backToPrevFrame(JFrame frame, int step, int prev_state) 
 	{
 		frame_number = frame_number - step * 10 - 1;
-		if (frame_number < 0)
-			frame_number = 0;
+		if (frame_number < frame_number_begin)
+			frame_number = frame_number_begin;
 		try {
 			fin = new FileInputStream(new File(filename));
 			fin.skip(frame_number * yuv_frame_size);
 			data_in = new DataInputStream(fin);
 			data_in.read(yuv_array, 0, yuv_frame_size);
 			frame.setTitle("Frame:" + frame_number + " " + filename);
+			++frame_number;
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -299,12 +307,15 @@ public class PlayController extends Component
 	 */
 	private void goToNextFrame(JFrame frame, int step, int prev_state) {
 		frame_number = frame_number + step * 10 - 1;
+		if (frame_number > frame_number_end)
+			frame_number = frame_number_end;
 		try {
 			fin = new FileInputStream(new File(filename));
 			fin.skip(frame_number * yuv_frame_size);
 			data_in = new DataInputStream(fin);
 			data_in.read(yuv_array, 0, yuv_frame_size);
 			frame.setTitle("Frame:" + frame_number + " " + filename);
+			++frame_number;
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -367,7 +378,7 @@ public class PlayController extends Component
         });
         
         PlayController con = new PlayController("./sequences/ShuttleStart_1280x720.yuv",
-        1280, 720, 10);        
+        1280, 720, 10, 600);        
         frame.add(con, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);

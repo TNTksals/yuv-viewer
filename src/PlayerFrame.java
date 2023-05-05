@@ -26,7 +26,8 @@ public class PlayerFrame extends JFrame
     private JFrame video_frame;
     private int video_frame_width = 176;
     private int video_frame_height = 144;
-    private int video_frame_number = 10;
+    private int video_frame_number_begin = 10;
+    private int video_frame_number_end = 500;
     private volatile PlayController controller;
     private Thread play_thread;
 
@@ -268,7 +269,8 @@ public class PlayerFrame extends JFrame
                 video_frame = new JFrame("YUV Player of Java");
                 video_frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./images/icon.png"));
                 video_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                controller = new PlayController(filename, video_frame_width, video_frame_height, video_frame_number);
+                controller = new PlayController(filename, video_frame_width, video_frame_height,
+                 video_frame_number_begin, video_frame_number_end);
                 video_frame.add(controller);
                 video_frame.pack();
                 video_frame.setVisible(true);
