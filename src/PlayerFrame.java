@@ -334,6 +334,14 @@ public class PlayerFrame extends JFrame
 
         // Quit
         jbtns[7].addActionListener((event) -> { System.exit(0); });
+
+        // Back to 0
+        jbtns[9].addActionListener((event) -> {
+            if (controller.getPlayState() == PlayController.PLAY)
+                controller.setPlayState(PlayController.BACKTOZERO_PLAY);
+            else
+                controller.setPlayState(PlayController.BACKTOZERO_PAUSE);
+        });
     }
 
     /**

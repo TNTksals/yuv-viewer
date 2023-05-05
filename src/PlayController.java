@@ -20,7 +20,8 @@ public class PlayController extends Component
 	public static final int NEXT5_PAUSE = 10;
 	public static final int BACKWARD = 11;
 	public static final int FORWARD = 12;
-	public static final int BACKTOZERO = 13;
+	public static final int BACKTOZERO_PLAY = 13;
+	public static final int BACKTOZERO_PAUSE = 14;
 
 	FileInputStream fin;
 	DataInputStream data_in;
@@ -324,6 +325,28 @@ public class PlayController extends Component
 		img.setRGB(0, 0, width, height, rgb_array, 0, width);
 		this.setPlayState(prev_state);	
 	}
+
+	/**
+	 * 回到视频开头
+	 * @param frame 视频帧显示的窗口
+	 */
+	private void backToBeginFrame(JFrame frame, int prev_state) 
+	{
+		frame_number = frame_number_begin;
+		try {
+    		fin = new FileInputStream(new File(filename));
+    		fin.skip(frame_number * yuv_frame_size);
+    		data_in = new DataInputStream(fin);
+    		data_in.read(yuv_array, 0, yuv_frame_size);
+    		++this.frame_number;
+    	} 
+    	catch (IOException e) {   
+            e.printStackTrace();  
+        }
+    	yuv2rgb();
+    	img.setRGB(0, 0, width, height, rgb_array, 0, width);
+		this.setPlayState(prev_state);
+	}
     
     public void play(JFrame frame) 
     {
@@ -359,6 +382,12 @@ public class PlayController extends Component
 					break;
 				case NEXT5_PAUSE:
 					goToNextFrame(frame, 5, PAUSE);
+					break;
+				case BACKTOZERO_PLAY:
+    				backToBeginFrame(frame, PLAY);
+    				break;
+				case BACKTOZERO_PAUSE:
+					backToBeginFrame(frame, PAUSE);
 					break;
 			}
 			repaint();
