@@ -11,10 +11,13 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 
 public class PlayerFrame extends JFrame
@@ -155,22 +158,26 @@ public class PlayerFrame extends JFrame
 
         text_field1.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent event) {
-                String t = text_field1.getText();
-                if (!t.isBlank()) {
-                    video_frame_width = Integer.parseInt(t);
-                    System.out.println(video_frame_width);
+            public void keyReleased(KeyEvent e) {
+                var content = text_field1.getText();
+                if (!content.isBlank())
+                    video_frame_width = Integer.parseInt(content);
+                else {
+                    text_field1.setText("0");
+                    video_frame_width = 0;
                 }
             }
         });
 
         text_field2.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent event) {
-                String t = text_field2.getText();
-                if (!t.isBlank()) {
-                    video_frame_height = Integer.parseInt(t);
-                    System.out.println(video_frame_width);
+            public void keyReleased(KeyEvent e) {
+                var content = text_field2.getText();
+                if (!content.isBlank())
+                    video_frame_height = Integer.parseInt(content);
+                else {
+                    text_field2.setText("0");
+                    video_frame_height = 0;
                 }
             }
         });
