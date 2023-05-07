@@ -8,18 +8,18 @@ import javax.swing.*;                 // 提供了构建 GUI 应用程序的高�
 
 public class PlayController extends Component 
 {
-	public static final int PLAY = 1;
-	public static final int PAUSE = 2;
-	public static final int PREV_PLAY = 3;
-	public static final int PREV_PAUSE = 4;
-	public static final int PREV5_PLAY = 5;
-	public static final int PREV5_PAUSE = 6;
-	public static final int NEXT_PLAY = 7;
-	public static final int NEXT_PAUSE = 8;
-	public static final int NEXT5_PLAY = 9;
-	public static final int NEXT5_PAUSE = 10;
-	public static final int BACKWARD = 11;
-	public static final int FORWARD = 12;
+	public static final int PLAY_FORWARD = 1;
+	public static final int PLAY_BACKWARD = 2;
+	public static final int PAUSE_FORWARD = 3;
+	public static final int PAUSE_BACKWARD = 4;
+	public static final int PREV_PLAY = 5;
+	public static final int PREV_PAUSE = 6;
+	public static final int PREV5_PLAY = 7;
+	public static final int PREV5_PAUSE = 8;
+	public static final int NEXT_PLAY = 9;
+	public static final int NEXT_PAUSE = 10;
+	public static final int NEXT5_PLAY = 11;
+	public static final int NEXT5_PAUSE = 12;
 	public static final int BACKTOZERO_PLAY = 13;
 	public static final int BACKTOZERO_PAUSE = 14;
 
@@ -39,7 +39,7 @@ public class PlayController extends Component
 	private int frame_number_begin;
 	private int frame_number_end;
 	private int frame_number;
-	private volatile int play_state = PAUSE;
+	private volatile int play_state = PAUSE_FORWARD;
     
     /**
      * 读取YUV文件并初始化类的成员变量
@@ -237,7 +237,7 @@ public class PlayController extends Component
 	 * 播放视频帧
 	 * @param frame 视频帧显示的窗体
 	 */
-	private void playFrame(JFrame frame) 
+	private void playForward(JFrame frame) 
 	{
 		if (frame_number == frame_number_end + 1)
 			return;
@@ -247,6 +247,26 @@ public class PlayController extends Component
 			++frame_number;
 		} 
 		catch (IOException e) {  
+			e.printStackTrace();
+		}
+		yuv2rgb();
+		img.setRGB(0, 0, width, height, rgb_array, 0, width);
+	}
+
+	
+	private void playBackward(JFrame frame)
+	{
+		--frame_number;
+		if (frame_number < frame_number_begin)
+			frame_number = frame_number_begin;
+		try {
+			fin = new FileInputStream(new File(filename));
+			fin.skip(frame_number * yuv_frame_size);
+			data_in = new DataInputStream(fin);
+			data_in.read(yuv_array, 0, yuv_frame_size);
+			frame.setTitle("Frame:" + frame_number + " " + filename);
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		yuv2rgb();
@@ -328,6 +348,7 @@ public class PlayController extends Component
     	img.setRGB(0, 0, width, height, rgb_array, 0, width);
 		this.setPlayState(prev_state);
 	}
+
     
     public void play(JFrame frame) 
     {
@@ -335,40 +356,45 @@ public class PlayController extends Component
     	{
 			switch (play_state)
 			{
-				case PLAY:
-					playFrame(frame);
+				case PLAY_FORWARD:
+					playForward(frame);
 					break;
-				case PAUSE:
+				case PLAY_BACKWARD:
+					playBackward(frame);
+					break;
+				case PAUSE_FORWARD:
+					break;
+				case PAUSE_BACKWARD:
 					break;
 				case PREV_PLAY:
-					backToPrevFrame(frame, 1, PLAY);
+					backToPrevFrame(frame, 1, PLAY_FORWARD);
 					break;
 				case PREV_PAUSE:
-					backToPrevFrame(frame, 1, PAUSE);
+					backToPrevFrame(frame, 1, PAUSE_FORWARD);
 					break;
 				case PREV5_PLAY:
-					backToPrevFrame(frame, 5, PLAY);
+					backToPrevFrame(frame, 5, PLAY_FORWARD);
 					break;
 				case PREV5_PAUSE:
-					backToPrevFrame(frame, 5, PAUSE);
+					backToPrevFrame(frame, 5, PAUSE_FORWARD);
 					break;
 				case NEXT_PLAY:
-					goToNextFrame(frame, 1, PLAY);
+					goToNextFrame(frame, 1, PLAY_FORWARD);
 					break;
 				case NEXT_PAUSE:
-					goToNextFrame(frame, 1, PAUSE);
+					goToNextFrame(frame, 1, PAUSE_FORWARD);
 					break;
 				case NEXT5_PLAY:
-					goToNextFrame(frame, 5, PLAY);
+					goToNextFrame(frame, 5, PLAY_FORWARD);
 					break;
 				case NEXT5_PAUSE:
-					goToNextFrame(frame, 5, PAUSE);
+					goToNextFrame(frame, 5, PAUSE_FORWARD);
 					break;
 				case BACKTOZERO_PLAY:
-    				backToBeginFrame(frame, PLAY);
+    				backToBeginFrame(frame, PLAY_FORWARD);
     				break;
 				case BACKTOZERO_PAUSE:
-					backToBeginFrame(frame, PAUSE);
+					backToBeginFrame(frame, PAUSE_FORWARD);
 					break;
 			}
 			repaint();

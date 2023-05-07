@@ -1,4 +1,5 @@
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -334,21 +335,29 @@ public class PlayerFrame extends JFrame
 
         // Play/Pause
         jbtns[3].addActionListener((event) -> {
+            var cur_state = controller.getPlayState();
             if (jbtns[3].getText().equals("Play"))
             {
-                controller.setPlayState(PlayController.PLAY);
+                if (cur_state == PlayController.PAUSE_FORWARD)
+                    controller.setPlayState(PlayController.PLAY_FORWARD);
+                else if (cur_state == PlayController.PAUSE_BACKWARD)
+                    controller.setPlayState(PlayController.PLAY_BACKWARD);
                 jbtns[3].setText("Pause");
             }
             else
             {
-                controller.setPlayState(PlayController.PAUSE);
+                if (cur_state == PlayController.PLAY_FORWARD)
+                    controller.setPlayState(PlayController.PAUSE_FORWARD);
+                else if (cur_state == PlayController.PLAY_BACKWARD)
+                    controller.setPlayState(PlayController.PAUSE_BACKWARD);
                 jbtns[3].setText("Play");
             }
         });
 
         // Next
         jbtns[0].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
+            var cur_state = controller.getPlayState();
+            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
                 controller.setPlayState(PlayController.NEXT_PLAY);
             else
                 controller.setPlayState(PlayController.NEXT_PAUSE);
@@ -356,7 +365,8 @@ public class PlayerFrame extends JFrame
 
         // Next5
         jbtns[2].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
+            var cur_state = controller.getPlayState();
+            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
                 controller.setPlayState(PlayController.NEXT5_PLAY);
             else
                 controller.setPlayState(PlayController.NEXT5_PAUSE);  
@@ -364,7 +374,8 @@ public class PlayerFrame extends JFrame
 
         // Prev
         jbtns[4].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
+            var cur_state = controller.getPlayState();
+            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
                 controller.setPlayState(PlayController.PREV_PLAY);
             else
                 controller.setPlayState(PlayController.PREV_PAUSE);
@@ -372,7 +383,8 @@ public class PlayerFrame extends JFrame
 
         // Prev5
         jbtns[6].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
+            var cur_state = controller.getPlayState();
+            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
                 controller.setPlayState(PlayController.PREV5_PLAY);
             else
                 controller.setPlayState(PlayController.PREV5_PAUSE);
@@ -381,16 +393,42 @@ public class PlayerFrame extends JFrame
         // Close All
         jbtns[5].addActionListener((event) -> { 
             video_frame.dispose();
-            controller.setPlayState(PlayController.PAUSE);
+            var cur_state = controller.getPlayState();
+            if (cur_state == PlayController.PLAY_FORWARD)
+                controller.setPlayState(PlayController.PAUSE_FORWARD);
+            else if (cur_state == PlayController.PLAY_BACKWARD)
+                controller.setPlayState(PlayController.PAUSE_BACKWARD);
             jbtns[3].setText("Play");
         });
 
         // Quit
         jbtns[7].addActionListener((event) -> { System.exit(0); });
 
+        // Backward/Forward
+        jbtns[8].addActionListener((event) -> {
+            var cur_state = controller.getPlayState();
+            if (jbtns[8].getText().equals("Backward"))
+            {
+                if (cur_state == PlayController.PLAY_FORWARD)
+                    controller.setPlayState(PlayController.PLAY_BACKWARD);
+                else if (cur_state == PlayController.PAUSE_FORWARD)
+                    controller.setPlayState(PlayController.PAUSE_BACKWARD);
+                jbtns[8].setText("Forward");
+            }
+            else
+            {
+                if (cur_state == PlayController.PLAY_BACKWARD)
+                    controller.setPlayState(PlayController.PLAY_FORWARD);
+                else if (cur_state == PlayController.PAUSE_BACKWARD)
+                    controller.setPlayState(PlayController.PAUSE_FORWARD);
+                jbtns[8].setText("Backward");
+            }
+        });
+
         // Back to 0
         jbtns[9].addActionListener((event) -> {
-            if (controller.getPlayState() == PlayController.PLAY)
+            var cur_state = controller.getPlayState();
+            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
                 controller.setPlayState(PlayController.BACKTOZERO_PLAY);
             else
                 controller.setPlayState(PlayController.BACKTOZERO_PAUSE);
