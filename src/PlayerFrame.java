@@ -29,8 +29,8 @@ public class PlayerFrame extends JFrame
     private JFrame video_frame;
     private int video_frame_width = 176;
     private int video_frame_height = 144;
-    private int video_frame_number_begin = 10;
-    private int video_frame_number_end = 500;
+    private int video_frame_number_begin = 0;
+    private int video_frame_number_end = 99999999;
     private volatile PlayController controller;
     private Thread play_thread;
 
@@ -197,7 +197,9 @@ public class PlayerFrame extends JFrame
         panel.setBorder(BorderFactory.createTitledBorder("Play Parameters"));
         panel.setBounds(220, 5, 245, 160);
 
+        // 帧率设置面板
         JPanel inner_panel1 = new JPanel(null);
+
         JLabel jl1 = new JLabel("Frame Rate");
         jl1.setBounds(5, 10, 100, 25);
         JComboBox<Integer> jcb = new JComboBox<>();
@@ -210,18 +212,56 @@ public class PlayerFrame extends JFrame
         jcb.addItem(25);
         jcb.addItem(30);
         jcb.addItem(999);
+
         inner_panel1.add(jl1);
         inner_panel1.add(jcb);
 
+        // 播放帧范围设置面板
         JPanel inner_panel2 = new JPanel(null);
+
         JLabel jl2 = new JLabel("From");
         JTextField jtf1 = new JTextField("0");
         JLabel jl3 = new JLabel("To");
         JTextField jtf2 = new JTextField("0");
+
         jl2.setBounds(5, 10, 35, 25);
         jtf1.setBounds(45, 10, 70, 25);
         jl3.setBounds(135, 10, 35, 25);
         jtf2.setBounds(160, 10, 70, 25);
+
+        jtf1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                var content = jtf1.getText();
+                if (!content.isBlank()) 
+                {
+                    video_frame_number_begin = Integer.parseInt(content);
+                    if (video_frame_number_begin < 0)
+                        video_frame_number_begin = 0;
+                }
+                else 
+                {
+                    jtf1.setText("0");
+                    video_frame_number_begin = 0;
+                }
+            }
+        });
+
+        jtf2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                var content = jtf2.getText();
+                if (!content.isBlank())
+                    video_frame_number_end = Integer.parseInt(content);
+                else 
+                {
+                    jtf2.setText("0");
+                    video_frame_number_end = 99999999;
+                }
+            }
+        });
+
+
         inner_panel2.add(jl2);
         inner_panel2.add(jtf1);
         inner_panel2.add(jl3);
