@@ -11,13 +11,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 
 public class PlayerFrame extends JFrame
@@ -27,10 +24,10 @@ public class PlayerFrame extends JFrame
     private final int DEFAULT_HEIGHT = 210;
 
     private JFrame video_frame;
-    private int video_frame_width = 176;
-    private int video_frame_height = 144;
-    private int video_frame_number_begin = 0;
-    private int video_frame_number_end = 99999999;
+    private int video_frame_width;
+    private int video_frame_height;
+    private int video_frame_number_begin;
+    private int video_frame_number_end;
     private volatile PlayController controller;
     private Thread play_thread;
 
@@ -56,14 +53,15 @@ public class PlayerFrame extends JFrame
      */
     private void init() 
     {
-        setFrameProperty();
+        setPlayerWindowProperties();
         addComponents();
+        setVideoFrameProperties();
     }
 
     /**
-     * 设置窗体参数
+     * 初始化播放器窗体属性
      */
-    private void setFrameProperty() 
+    private void setPlayerWindowProperties() 
     {
         // 设置窗体的宽高和起始位置
         this.setBounds(0, 200, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -71,10 +69,6 @@ public class PlayerFrame extends JFrame
         this.setTitle(DEFAULT_TITLE);  
         // 设置窗体的关闭方式
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        // // 设置居中
-        // this.setLocationRelativeTo(null); 
-        // // 设置置顶
-        // this.setAlwaysOnTop(true);  
         // 设置窗体的最大最小化
         this.setResizable(false);
         // 设置图标
@@ -91,6 +85,17 @@ public class PlayerFrame extends JFrame
         container.add(getFrameSizePane());
         container.add(getPlayParametersPane());
         container.add(getControlButtonPane());
+    }
+
+    /**
+     * 初始化视频帧属性
+     */
+    private void setVideoFrameProperties() 
+    {
+        video_frame_width = 176;
+        video_frame_height = 144;
+        video_frame_number_begin = 0;
+        video_frame_number_end = 99999999;
     }
 
     /**
@@ -261,11 +266,11 @@ public class PlayerFrame extends JFrame
             }
         });
 
-
         inner_panel2.add(jl2);
         inner_panel2.add(jtf1);
         inner_panel2.add(jl3);
         inner_panel2.add(jtf2);
+
 
         JRadioButton zoom2x2 = new JRadioButton("Zoom2x2", true);
 
