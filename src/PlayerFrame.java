@@ -217,6 +217,7 @@ public class PlayerFrame extends JFrame
         jcb.addItem(25);
         jcb.addItem(30);
         jcb.addItem(999);
+        jcb.setSelectedIndex(5);
 
         inner_panel1.add(jl1);
         inner_panel1.add(jcb);
