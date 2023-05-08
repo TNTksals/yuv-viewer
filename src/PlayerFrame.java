@@ -357,37 +357,81 @@ public class PlayerFrame extends JFrame
         // Next
         jbtns[0].addActionListener((event) -> {
             var cur_state = controller.getPlayState();
-            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
-                controller.setPlayState(PlayController.NEXT_PLAY);
-            else
-                controller.setPlayState(PlayController.NEXT_PAUSE);
+            switch (cur_state)
+            {
+                case PlayController.PLAY_FORWARD:
+                    controller.setPlayState(PlayController.NEXT_PLAY_FORWARD);
+                    break;
+                case PlayController.PLAY_BACKWARD:
+                    controller.setPlayState(PlayController.NEXT_PLAY_BACKWARD);
+                    break;
+                case PlayController.PAUSE_FORWARD:
+                    controller.setPlayState(PlayController.NEXT_PAUSE_FORWARD);
+                    break;
+                case PlayController.PAUSE_BACKWARD:
+                    controller.setPlayState(PlayController.NEXT_PAUSE_BACKWARD);
+                    break;
+            }
         });
 
         // Next5
         jbtns[2].addActionListener((event) -> {
             var cur_state = controller.getPlayState();
-            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
-                controller.setPlayState(PlayController.NEXT5_PLAY);
-            else
-                controller.setPlayState(PlayController.NEXT5_PAUSE);  
+            switch (cur_state)
+            {
+                case PlayController.PLAY_FORWARD:
+                    controller.setPlayState(PlayController.NEXT5_PLAY_FORWARD);
+                    break;
+                case PlayController.PLAY_BACKWARD:
+                    controller.setPlayState(PlayController.NEXT5_PLAY_BACKWARD);
+                    break;
+                case PlayController.PAUSE_FORWARD:
+                    controller.setPlayState(PlayController.NEXT5_PAUSE_FORWARD);
+                    break;
+                case PlayController.PAUSE_BACKWARD:
+                    controller.setPlayState(PlayController.NEXT5_PAUSE_BACKWARD);
+                    break;
+            }
         });
 
         // Prev
         jbtns[4].addActionListener((event) -> {
             var cur_state = controller.getPlayState();
-            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
-                controller.setPlayState(PlayController.PREV_PLAY);
-            else
-                controller.setPlayState(PlayController.PREV_PAUSE);
+            switch (cur_state)
+            {
+                case PlayController.PLAY_FORWARD:
+                    controller.setPlayState(PlayController.PREV_PLAY_FORWARD);
+                    break;
+                case PlayController.PLAY_BACKWARD:
+                    controller.setPlayState(PlayController.PREV_PLAY_BACKWARD);
+                    break;
+                case PlayController.PAUSE_FORWARD:
+                    controller.setPlayState(PlayController.PREV_PAUSE_FORWARD);
+                    break;
+                case PlayController.PAUSE_BACKWARD:
+                    controller.setPlayState(PlayController.PREV_PAUSE_BACKWARD);
+                    break;
+            }
         });
 
         // Prev5
         jbtns[6].addActionListener((event) -> {
             var cur_state = controller.getPlayState();
-            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
-                controller.setPlayState(PlayController.PREV5_PLAY);
-            else
-                controller.setPlayState(PlayController.PREV5_PAUSE);
+            switch (cur_state)
+            {
+                case PlayController.PLAY_FORWARD:
+                    controller.setPlayState(PlayController.PREV5_PLAY_FORWARD);
+                    break;
+                case PlayController.PLAY_BACKWARD:
+                    controller.setPlayState(PlayController.PREV5_PLAY_BACKWARD);
+                    break;
+                case PlayController.PAUSE_FORWARD:
+                    controller.setPlayState(PlayController.PREV5_PAUSE_FORWARD);
+                    break;
+                case PlayController.PAUSE_BACKWARD:
+                    controller.setPlayState(PlayController.PREV5_PAUSE_BACKWARD);
+                    break;
+            }
         });
 
         // Close All
@@ -428,10 +472,21 @@ public class PlayerFrame extends JFrame
         // Back to 0
         jbtns[9].addActionListener((event) -> {
             var cur_state = controller.getPlayState();
-            if (cur_state == PlayController.PLAY_FORWARD || cur_state == PlayController.PLAY_BACKWARD)
-                controller.setPlayState(PlayController.BACKTOZERO_PLAY);
-            else
-                controller.setPlayState(PlayController.BACKTOZERO_PAUSE);
+            switch (cur_state)
+            {
+                case PlayController.PLAY_FORWARD:
+                    controller.setPlayState(PlayController.BACKTOZERO_PLAY_FORWARD);
+                    break;
+                case PlayController.PLAY_BACKWARD:
+                    controller.setPlayState(PlayController.BACKTOZERO_PLAY_BACKWARD);
+                    break;
+                case PlayController.PAUSE_FORWARD:
+                    controller.setPlayState(PlayController.BACKTOZERO_PAUSE_FORWARD);
+                    break;
+                case PlayController.PAUSE_BACKWARD:
+                    controller.setPlayState(PlayController.BACKTOZERO_PAUSE_BACKWARD);
+                    break;
+            }
         });
     }
 

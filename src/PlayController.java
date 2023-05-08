@@ -12,16 +12,32 @@ public class PlayController extends Component
 	public static final int PLAY_BACKWARD = 2;
 	public static final int PAUSE_FORWARD = 3;
 	public static final int PAUSE_BACKWARD = 4;
-	public static final int PREV_PLAY = 5;
-	public static final int PREV_PAUSE = 6;
-	public static final int PREV5_PLAY = 7;
-	public static final int PREV5_PAUSE = 8;
-	public static final int NEXT_PLAY = 9;
-	public static final int NEXT_PAUSE = 10;
-	public static final int NEXT5_PLAY = 11;
-	public static final int NEXT5_PAUSE = 12;
-	public static final int BACKTOZERO_PLAY = 13;
-	public static final int BACKTOZERO_PAUSE = 14;
+
+	public static final int PREV_PLAY_FORWARD = 5;
+	public static final int PREV_PLAY_BACKWARD = 6;
+	public static final int PREV_PAUSE_FORWARD = 7;
+	public static final int PREV_PAUSE_BACKWARD = 8;
+
+	public static final int PREV5_PLAY_FORWARD = 9;
+	public static final int PREV5_PLAY_BACKWARD = 10;
+	public static final int PREV5_PAUSE_FORWARD = 11;
+	public static final int PREV5_PAUSE_BACKWARD = 12;
+
+	public static final int NEXT_PLAY_FORWARD = 13;
+	public static final int NEXT_PLAY_BACKWARD = 14;
+	public static final int NEXT_PAUSE_FORWARD = 15;
+	public static final int NEXT_PAUSE_BACKWARD = 16;
+
+	public static final int NEXT5_PLAY_FORWARD = 17;
+	public static final int NEXT5_PLAY_BACKWARD = 18;
+	public static final int NEXT5_PAUSE_FORWARD = 19;
+	public static final int NEXT5_PAUSE_BACKWARD = 20;
+
+	public static final int BACKTOZERO_PLAY_FORWARD = 21;
+	public static final int BACKTOZERO_PLAY_BACKWARD = 22;
+	public static final int BACKTOZERO_PAUSE_FORWARD = 23;
+	public static final int BACKTOZERO_PAUSE_BACKWARD = 24;
+
 
 	FileInputStream fin;
 	DataInputStream data_in;
@@ -41,6 +57,7 @@ public class PlayController extends Component
 	private int frame_number;
 	private volatile int play_state = PAUSE_FORWARD;
     
+
     /**
      * 读取YUV文件并初始化类的成员变量
      * @param filename 视频文件名
@@ -234,7 +251,7 @@ public class PlayController extends Component
     }
 
 	/**
-	 * 播放视频帧
+	 * 顺序播放视频帧
 	 * @param frame 视频帧显示的窗体
 	 */
 	private void playForward(JFrame frame) 
@@ -253,7 +270,10 @@ public class PlayController extends Component
 		img.setRGB(0, 0, width, height, rgb_array, 0, width);
 	}
 
-	
+	/**
+	 * 倒序播放视频帧
+	 * @param frame 视频帧显示的窗体
+	 */
 	private void playBackward(JFrame frame)
 	{
 		--frame_number;
@@ -366,35 +386,65 @@ public class PlayController extends Component
 					break;
 				case PAUSE_BACKWARD:
 					break;
-				case PREV_PLAY:
+				case PREV_PLAY_FORWARD:
 					backToPrevFrame(frame, 1, PLAY_FORWARD);
 					break;
-				case PREV_PAUSE:
+				case PREV_PLAY_BACKWARD:
+					backToPrevFrame(frame, 1, PLAY_BACKWARD);
+					break;
+				case PREV_PAUSE_FORWARD:
 					backToPrevFrame(frame, 1, PAUSE_FORWARD);
 					break;
-				case PREV5_PLAY:
+				case PREV_PAUSE_BACKWARD:
+					backToPrevFrame(frame, 1, PAUSE_BACKWARD);
+					break;
+				case PREV5_PLAY_FORWARD:
 					backToPrevFrame(frame, 5, PLAY_FORWARD);
 					break;
-				case PREV5_PAUSE:
+				case PREV5_PLAY_BACKWARD:
+					backToPrevFrame(frame, 5, PLAY_BACKWARD);
+					break;
+				case PREV5_PAUSE_FORWARD:
 					backToPrevFrame(frame, 5, PAUSE_FORWARD);
 					break;
-				case NEXT_PLAY:
+				case PREV5_PAUSE_BACKWARD:
+					backToPrevFrame(frame, 5, PAUSE_BACKWARD);
+					break;
+				case NEXT_PLAY_FORWARD:
 					goToNextFrame(frame, 1, PLAY_FORWARD);
 					break;
-				case NEXT_PAUSE:
+				case NEXT_PLAY_BACKWARD:
+					goToNextFrame(frame, 1, PLAY_BACKWARD);
+					break;
+				case NEXT_PAUSE_FORWARD:
 					goToNextFrame(frame, 1, PAUSE_FORWARD);
 					break;
-				case NEXT5_PLAY:
+				case NEXT_PAUSE_BACKWARD:
+					goToNextFrame(frame, 1, PAUSE_BACKWARD);
+					break;
+				case NEXT5_PLAY_FORWARD:
 					goToNextFrame(frame, 5, PLAY_FORWARD);
 					break;
-				case NEXT5_PAUSE:
+				case NEXT5_PLAY_BACKWARD:
+					goToNextFrame(frame, 5, PLAY_BACKWARD);
+					break;
+				case NEXT5_PAUSE_FORWARD:
 					goToNextFrame(frame, 5, PAUSE_FORWARD);
 					break;
-				case BACKTOZERO_PLAY:
+				case NEXT5_PAUSE_BACKWARD:
+					goToNextFrame(frame, 5, PAUSE_BACKWARD);
+					break;
+				case BACKTOZERO_PLAY_FORWARD:
     				backToBeginFrame(frame, PLAY_FORWARD);
     				break;
-				case BACKTOZERO_PAUSE:
+				case BACKTOZERO_PLAY_BACKWARD:
+					backToBeginFrame(frame, PLAY_BACKWARD);
+					break;
+				case BACKTOZERO_PAUSE_FORWARD:
 					backToBeginFrame(frame, PAUSE_FORWARD);
+					break;
+				case BACKTOZERO_PAUSE_BACKWARD:
+					backToBeginFrame(frame, PAUSE_BACKWARD);
 					break;
 			}
 			repaint();
