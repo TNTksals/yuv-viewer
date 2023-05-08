@@ -55,7 +55,7 @@ public class PlayController extends Component
 	private int frame_number_begin;
 	private int frame_number_end;
 	private int frame_number;
-	private volatile int play_state = PAUSE_FORWARD;
+	private volatile int play_state;
     
 
     /**
@@ -76,6 +76,7 @@ public class PlayController extends Component
 		this.frame_number_begin = frame_number_begin;
 		this.frame_number_end = frame_number_end;
 		this.frame_number = frame_number_begin;
+		this.play_state = PAUSE_FORWARD;
     	//在Heap分配空间
     	this.img = new BufferedImage(width, height, 1);  // 1:TYPE_INT_RGB
     	this.yuv_array = new byte[yuv_frame_size];
@@ -213,11 +214,8 @@ public class PlayController extends Component
         if (img == null) 
         {
              return new Dimension(width, height);
-        } 
-        else 
-        {
-           return new Dimension(img.getWidth(null), img.getHeight(null));
         }
+        return new Dimension(img.getWidth(null), img.getHeight(null));
     }
 
 	/**
@@ -366,7 +364,10 @@ public class PlayController extends Component
 		this.setPlayState(prev_state);
 	}
 
-    
+    /**
+	 * 播放视频帧
+	 * @param frame 视频帧显示的窗体
+	 */
     public void play(JFrame frame) 
     {
     	while(true)
@@ -474,7 +475,6 @@ public class PlayController extends Component
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {System.exit(0);}
         });
-        
         PlayController con = new PlayController("./sequences/ShuttleStart_1280x720.yuv",
         1280, 720, 10, 600);        
         frame.add(con, BorderLayout.CENTER);
