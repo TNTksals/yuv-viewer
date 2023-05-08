@@ -115,7 +115,6 @@ public class PlayController extends Component
     		for (int i = 0; i < (width >> 1); ++i)
     		{
     			i2 = i << 1;
-    			int a, b;
     			u_array[h2 + i2] = yuv_array[frame_size + h + i] & 0xff;
     			v_array[h2 + i2] = yuv_array[frame_size2 + h + i] & 0xff;
     		}
@@ -156,8 +155,6 @@ public class PlayController extends Component
     	}
 		for (i2 = 0; i2 < width - 2; i2 += 2)
 		{
-			int a, b, ab;
-			
 			u_array[h2 + i2 + 1] = 
 			u_array[h2 + i2 + width + 1] = (u_array[h2 + i2] + u_array[h2 + i2 + 2] + 1) >> 1;
 			u_array[h2 + i2 + width] = u_array[h2 + i2];
@@ -473,7 +470,6 @@ public class PlayController extends Component
      */
 	public static void main(String[] args) 
 	{
-		// TODO Auto-generated method stub
         JFrame frame = new JFrame("YUV Player of Java");
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {System.exit(0);}

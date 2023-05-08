@@ -1,5 +1,4 @@
 import java.awt.Container;
-import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
