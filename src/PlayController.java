@@ -6,7 +6,7 @@ import javax.imageio.*;               // 提供了读取和写入图像数据的
 import javax.swing.*;                 // 提供了构建 GUI 应用程序的高级组件和工具类，例如按钮、文本框、表格等
 
 
-public class PlayController extends Component 
+public class PlayController extends JComponent 
 {
 	public static final int PLAY_FORWARD = 1;
 	public static final int PLAY_BACKWARD = 2;
