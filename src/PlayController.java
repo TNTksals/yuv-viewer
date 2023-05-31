@@ -321,7 +321,8 @@ public class PlayController extends JComponent
 	 * @param step 快进的帧数
 	 * @param prev_state 快进之前的播放状态
 	 */
-	private void goToNextFrame(JFrame frame, int step, int prev_state) {
+	private void goToNextFrame(JFrame frame, int step, int prev_state) 
+	{
 		frame_number = frame_number + step * 10 - 1;
 		if (frame_number > frame_number_end)
 			frame_number = frame_number_end;
