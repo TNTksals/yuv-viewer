@@ -1,5 +1,7 @@
 # YUVviewer 
 
+## Overview
+
 This is a pseudo YUVviewer player based on Java Swing that can play YUV format video files. The player includes a UI interface and a controller that can implement functions such as playing, pausing, and stopping videos.
 
 ## Requirements
@@ -37,7 +39,7 @@ To use the player, follow these steps:
 
 5. Set the playback parameters and manipulate the playback functions by clicking buttons, radio buttons, etc.
 
-![image-20230616194715209](C:\Users\Ksals\AppData\Roaming\Typora\typora-user-images\image-20230616194715209.png)
+![player](C:\Users\Ksals\AppData\Roaming\Typora\typora-user-images\image-20230616195429860.png)
 
 ## License
 
