@@ -37,7 +37,7 @@ To use the player, follow these steps:
 
 5. Set the playback parameters and manipulate the playback functions by clicking buttons, radio buttons, etc.
 
-![image-20230616194244975](C:\Users\Ksals\AppData\Roaming\Typora\typora-user-images\image-20230616194244975.png)
+![image-20230616194715209](C:\Users\Ksals\AppData\Roaming\Typora\typora-user-images\image-20230616194715209.png)
 
 ## License
 
