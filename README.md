@@ -29,17 +29,19 @@ To use the player, follow these steps:
 
 3. Run the `App.java` file to start the player.
 
-4. Set the playback parameters and manipulate the playback functions by clicking buttons, radio buttons, etc.
-
-5. Alternatively, download the packaged jar file from the release section and run the jar file using the following`java` command line to start the player.
+5. Alternatively, download the packaged jar file from the releases section and run the jar file using the following`java` command line to start the player：
 
    ```
    java -jar YUVviewer.jar
    ```
 
+5. Set the playback parameters and manipulate the playback functions by clicking buttons, radio buttons, etc.
+
+![image-20230616194244975](C:\Users\Ksals\AppData\Roaming\Typora\typora-user-images\image-20230616194244975.png)
+
 ## License
 
-
+This project is licensed under the BSD License.
 
 ## Contributing
 
